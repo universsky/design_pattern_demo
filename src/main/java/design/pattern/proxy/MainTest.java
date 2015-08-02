@@ -12,11 +12,16 @@ public class MainTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		ProxySubject proxySubject = new ProxySubject();
 		proxySubject.request();
+
+		Moveable t = new Tank();
+		ProxyTime proxyTimeTank = new ProxyTime(t);
+		proxyTimeTank.move();
+
+		ProxyLogTank logTank = new ProxyLogTank(t);
+		logTank.move();
 
 	}
 
 }
-

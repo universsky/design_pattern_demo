@@ -14,7 +14,6 @@ public class RealSubject extends Subject {
 	 * @see design.pattern.proxy.Subject#request()
 	 */
 	public void request() {
-		// TODO Auto-generated method stub
 		System.out.println("I am real subject");
 
 	}
