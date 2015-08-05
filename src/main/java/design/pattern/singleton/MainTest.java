@@ -25,6 +25,28 @@ public class MainTest {
 		System.out.println(s2);
 		System.out.println(s1 == s2);
 
+		// final AtomicInteger ci = new AtomicInteger(0);
+		//
+		// synchronized (MainTest) {
+		// for (; ci.get() < stns.length; ci.getAndIncrement()) {
+		// Runnable r = new Runnable() {
+		// @Override
+		// public void run() {
+		// synchronized (MainTest) {
+		// hungeryMans[ci.get()] = SingletonHungeryMan
+		// .getInstance();// 这里保证线程安全的取得正确的数组下标，实现了“顺序打印”
+		// System.out.println(ci.get() + " "
+		// + hungeryMans[ci.get()]);
+		// }
+		// }
+		// };
+		// ExecutorService executor = Executors.newFixedThreadPool(100);//
+		// 通过线程池执行
+		// executor.execute(r);
+		// executor.shutdown();
+		// }
+		// }
+
 		final int[] index = new int[1];
 		final AtomicInteger count = new AtomicInteger(0);// 用来实现“顺序打印”
 		for (index[0] = 0; index[0] < stns.length; index[0]++) {
