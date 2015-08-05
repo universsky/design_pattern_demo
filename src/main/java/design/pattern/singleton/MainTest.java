@@ -1,6 +1,3 @@
-/**
- * 
- */
 package design.pattern.singleton;
 
 import java.util.concurrent.ExecutorService;
@@ -8,8 +5,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author chenguangjian
- *
+ * 
+ * @author chenguangjian 2015年8月6日 上午1:05:18
  */
 public class MainTest {
 	final static MainTest MainTest = new MainTest();
