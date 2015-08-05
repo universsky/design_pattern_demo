@@ -14,7 +14,7 @@ public class SingletonHungeryMan {
 
 	final private static SingletonHungeryMan ins = new SingletonHungeryMan(); // 这地方直接用static实例变量的方式来保证单例
 
-	// 静态工厂方法,但是在多线程环境中，还是会返回null
+	// 静态工厂方法,线程安全的
 	public static SingletonHungeryMan getInstance() {
 		return ins;
 	}

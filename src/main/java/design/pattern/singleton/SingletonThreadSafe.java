@@ -8,7 +8,6 @@ package design.pattern.singleton;
  *         这种方式的实现对于线程来说并不是安全的，因为在多线程的环境下有可能得到Singleton类的多个实例。如果同时有两个线程去判断
  *         （instance ==
  *         null），并且得到的结果为真，这时两个线程都会创建类Singleton的实例，这样就违背了Singleton模式的原则 。
- *         实际运行结果表明，在多线程环境中，调用getInstance()方法，会有可能返回null
  * 
  *         实际上在上述代码中，有可能在计算出表达式的值之前，对象实例已经被创建，但是内存模型并不能保证对象实例在第二个线程创建之前被发现。
  *         该实现方式主要有两个优点： 由于实例是在 Instance
@@ -23,7 +22,7 @@ public class SingletonThreadSafe {
 	}
 
 	/**
-	 * 这样写，依然是线程不安全的
+	 * 线程安全的
 	 * 
 	 * @return
 	 */
@@ -35,7 +34,7 @@ public class SingletonThreadSafe {
 	}
 
 	/**
-	 * 双重检查锁定 这样写，依然是线程不安全的
+	 * 双重检查锁定，线程安全的
 	 * 
 	 * @return
 	 */
