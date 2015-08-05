@@ -17,7 +17,8 @@ public class MainTest {
 			.getInstance();
 	final static SingletonThreadNotSafe s2 = SingletonThreadNotSafe
 			.getInstance();
-	// Singleton s3 = new Singleton(); // private 只能在Singleton类内部才可以访问
+	// final static Singleton s3 = new Singleton(); // private
+	// 只能在Singleton类内部才可以访问
 	final static SingletonThreadNotSafe[] stns = new SingletonThreadNotSafe[10000];
 	final static SingletonThreadSafe[] sts = new SingletonThreadSafe[10000];
 	final static SingletonHungeryMan[] hungeryMans = new SingletonHungeryMan[10000];
