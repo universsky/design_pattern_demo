@@ -2,6 +2,7 @@ package design.pattern.singleton;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -25,13 +26,19 @@ public class MainTest {
 		System.out.println(s1);
 		System.out.println(s2);
 		System.out.println(s1 == s2);
-		printInstances(hungeryMans);
-		printInstances(stns);// 怎样模拟线程不安全的单例demo ？
+		printInstances3(hungeryMans);
+		// printInstances(stns);// 怎样模拟线程不安全的单例demo ？
 	}
 
+	/**
+	 * 
+	 * @param s
+	 */
 	private static void printInstances(final SingletonThreadNotSafe[] s) {
 		final int[] index = new int[1];
 		final AtomicInteger count = new AtomicInteger(0);// 用来实现“顺序打印”
+		ExecutorService executor = Executors.newFixedThreadPool(10);// 通过线程池执行
+
 		for (index[0] = 0; index[0] < LENGTH; index[0]++) {
 			Runnable r = new Runnable() {
 				@Override
@@ -43,15 +50,20 @@ public class MainTest {
 					}
 				}
 			};
-			ExecutorService executor = Executors.newFixedThreadPool(10);// 通过线程池执行
 			executor.execute(r);
-			executor.shutdown();
 		}
+		executor.shutdown();
 	}
 
+	/**
+	 * 
+	 * @param h
+	 */
 	private static void printInstances(final SingletonHungeryMan[] h) {
 		final int[] index = new int[1];
 		final AtomicInteger count = new AtomicInteger(0);// 用来实现“顺序打印”
+		ExecutorService executor = Executors.newFixedThreadPool(10);// 通过线程池执行
+
 		for (index[0] = 0; index[0] < LENGTH; index[0]++) {
 			Runnable r = new Runnable() {
 				@Override
@@ -63,9 +75,67 @@ public class MainTest {
 					}
 				}
 			};
-			ExecutorService executor = Executors.newFixedThreadPool(10);// 通过线程池执行
 			executor.execute(r);
-			executor.shutdown();
+
+		}
+		executor.shutdown();
+	}
+
+	/**
+	 * 
+	 * @param h
+	 */
+	private static void printInstances2(final SingletonHungeryMan[] h) {
+		final AtomicInteger index = new AtomicInteger();
+		ExecutorService executor = Executors.newFixedThreadPool(10000);// 通过线程池执行
+		for (int i = 0; i < LENGTH; i++) {
+			Runnable r = new Runnable() {
+				@Override
+				public void run() {
+					synchronized (MainTest) {
+						h[index.get()] = SingletonHungeryMan.getInstance();// 这里保证线程安全的取得正确的数组下标，实现了“顺序打印”
+						System.out.println(index.get() + " " + h[index.get()]);
+						index.getAndIncrement();
+					}
+				}
+			};
+			executor.execute(r);
+		}
+
+		executor.shutdown();
+		try {
+			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 * @param h
+	 */
+	private static void printInstances3(final SingletonHungeryMan[] h) {
+		ExecutorService executor = Executors.newFixedThreadPool(10000);// 通过线程池执行
+		final int[] i = new int[1];
+		for (i[0] = 0; i[0] < LENGTH;) {
+			Runnable r = new Runnable() {
+				@Override
+				public void run() {
+					synchronized (MainTest) {
+						h[i[0]] = SingletonHungeryMan.getInstance();// 这里保证线程安全的取得正确的数组下标，实现了“顺序打印”
+						System.out.println(i[0] + " " + h[i[0]]);
+						i[0]++;
+					}
+				}
+			};
+			executor.execute(r);
+		}
+
+		executor.shutdown();
+		try {
+			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 }
