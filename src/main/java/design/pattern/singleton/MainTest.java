@@ -1,9 +1,15 @@
 package design.pattern.singleton;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ThreadPoolExecutor.DiscardPolicy;
+import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
 
 /**
  * 
@@ -115,19 +121,25 @@ public class MainTest {
 	 * @param h
 	 */
 	private static void printInstances3(final SingletonHungeryMan[] h) {
-		ExecutorService executor = Executors.newFixedThreadPool(10000);// 通过线程池执行
+		ExecutorService executor = new ThreadPoolExecutor(10000, 10000, 0L,
+				TimeUnit.NANOSECONDS, new ArrayBlockingQueue<Runnable>(0),
+				new AbortPolicy());
+
 		final int[] i = new int[1];
 		for (i[0] = 0; i[0] < LENGTH;) {
 			Runnable r = new Runnable() {
 				@Override
 				public void run() {
 					synchronized (MainTest) {
-						h[i[0]] = SingletonHungeryMan.getInstance();// 这里保证线程安全的取得正确的数组下标，实现了“顺序打印”
-						System.out.println(i[0] + " " + h[i[0]]);
+						// h[i[0]] = SingletonHungeryMan.getInstance();//
+						// 这里保证线程安全的取得正确的数组下标，实现了“顺序打印”
+						// System.out.println(i[0] + " " + h[i[0]]);
+						System.out.println(i[0]);
 						i[0]++;
 					}
 				}
 			};
+			// new Thread(r).start();
 			executor.execute(r);
 		}
 
