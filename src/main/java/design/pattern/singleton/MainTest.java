@@ -11,6 +11,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.ThreadPoolExecutor.DiscardPolicy;
 import java.util.concurrent.ThreadPoolExecutor.AbortPolicy;
 
+import org.eclipse.jetty.util.BlockingArrayQueue;
+
 /**
  * 
  * @author chenguangjian 2015年8月6日 上午1:05:18
@@ -121,8 +123,12 @@ public class MainTest {
 	 * @param h
 	 */
 	private static void printInstances3(final SingletonHungeryMan[] h) {
+		// ExecutorService executor = new ThreadPoolExecutor(10000, 10000, 0L,
+		// TimeUnit.NANOSECONDS, new ArrayBlockingQueue<Runnable>(10),
+		// new AbortPolicy());
+
 		ExecutorService executor = new ThreadPoolExecutor(10000, 10000, 0L,
-				TimeUnit.NANOSECONDS, new ArrayBlockingQueue<Runnable>(0),
+				TimeUnit.NANOSECONDS, new BlockingArrayQueue<Runnable>(0),
 				new AbortPolicy());
 
 		final int[] i = new int[1];
