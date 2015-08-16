@@ -34,7 +34,7 @@ public class MainTest {
 		System.out.println(s1);
 		System.out.println(s2);
 		System.out.println(s1 == s2);
-		printInstances3(hungeryMans);
+		printInstances(hungeryMans);
 		// printInstances(stns);// 怎样模拟线程不安全的单例demo ？
 	}
 
